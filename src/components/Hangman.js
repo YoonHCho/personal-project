@@ -1,107 +1,112 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
+import { alphabet, drawHangman } from '../container/draw-letter';
 
-const letters = 'qwertyuiopasdfghjklzxcvbnm';
-const testWord = 'molla';
-
-// const canvas = React.createElement('canvas');
-
-// 
-// c.lineWidth = 5;
+const testWord = 'hello world';
 
 const Hangman = () => {
   const [ wrong, setWrong ] = useState(0);
+  const [ correctLetters, setCorrectLetters ] = useState([]);
+  const [ wrongLetters, setWrongLetters ] = useState([]);
   const canvasRef = useRef(null);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    canvas.width = 270;
-    canvas.height = 400;
-    const context = canvas.getContext('2d');
-    context.lineWidth = 2;
+  const wordArray = testWord.toUpperCase().split('');
 
-    if (wrong >= 0) {
-      context.beginPath();
-      context.moveTo(10, 375);
-      context.lineTo(260, 375);
-      context.moveTo(60, 375);
-      context.lineTo(60, 50);
-      context.lineTo(150, 50);
-      context.moveTo(149, 50);
-      context.lineTo(149, 80);
-      context.moveTo(60, 80)
-      context.lineTo(90 ,50)
-      context.closePath();
-      context.stroke();
+  useEffect(() => {
+    drawHangman(canvasRef, wrong);
+  }, [wrong]);
+
+  useEffect(() => {
+    console.log('what');
+  }, [correctLetters, wrongLetters])
+
+  const clickedButton = e => {
+    const selectedLetter = e.target.innerText;
+    // if the clicked letter is included in the word
+    if (wordArray.includes(selectedLetter)) {
+      // check if the clicked letter is included in the correctLetters array
+      // if it is not in the correctLetters array, push the letter to the array
+      if (!correctLetters.includes(selectedLetter)) {
+        setCorrectLetters((prev) => {
+          const toSet = prev;
+          toSet.push(selectedLetter);
+          return toSet;
+        });
+      }
+      setWrong(prev => prev + 0);
+    // if the clicked letter is NOT included in the word
+    } else {
+      // check if the clicked letter is included in the wrongLetters array
+      // if it is not included, push the letter to the wrongLetters array
+      if (!(wrongLetters.includes(selectedLetter))) {
+        setWrongLetters((prev) => {
+          const toSet = prev;
+          toSet.push(selectedLetter);
+          return toSet;
+        });
+
+        if (wrong >= 6) {
+          setWrong(prev => prev + 1);
+          return console.log('END OF GAME!')
+        }
+
+        setWrong(prev => prev + 1);
+      }
     }
-    if (wrong >= 1) {
-      context.beginPath();
-      context.arc(147, 110, 30, 20, 40 * Math.PI);
-      context.closePath();
-      context.stroke();
-    }
-    if (wrong >= 2) {
-      context.beginPath();
-      context.moveTo(147, 140);
-      context.lineTo(147, 220);
-      context.closePath();
-      context.stroke();
-    }
-    if (wrong >= 3) {
-      context.beginPath();
-      context.moveTo(147, 141);
-      context.lineTo(187, 186);
-      context.closePath();
-      context.stroke();
-    }
-    if (wrong >= 4) {
-      context.beginPath();
-      context.moveTo(147, 141);
-      context.lineTo(107, 190);
-      context.closePath();
-      context.stroke();
-    }
-    if (wrong >= 5) {
-      context.beginPath();
-      context.moveTo(147, 220);
-      context.lineTo(187, 300);
-      context.closePath();
-      context.stroke();
-    }
-    if (wrong >= 6) {
-      context.beginPath();
-      context.moveTo(147, 220);
-      context.lineTo(107, 300);
-      context.closePath();
-      context.stroke();
-    }
-    if (wrong >= 7) {
-      context.beginPath();
-      context.arc(147, 110, 30, 20, 40 * Math.PI);
-      context.fillStyle = 'red';
-      context.fill()
-      context.closePath();
-      context.stroke();
-    }
-  })
+  }
 
   return (
-    <div className="container">
-      <canvas ref={canvasRef} />
-      <div className='bg-dark text-white'>
-        <h1 className='font-monospace text-center'>
-        {
-          [...testWord].map(letter => {
-            if (letter === ' ') {
-              return '\xa0\xa0\xa0\xa0';
-            } else {
-              return '__ ';
+    <div className="container font-monospace">
+      {console.log('hey')}
+      <div className='row justify-content-md-center'>
+        <div className='col-md-6 row justify-content-md-center'>
+          <canvas ref={canvasRef} />
+        </div>
+        <div className='col-md-6 bg-dark text-white'>
+          <h1 className='text-center'>
+          {
+            [...testWord].map(letter => {
+              if (letter === ' ') {
+                return (
+                  <br />
+                );
+              } else {
+                return '_ ';
+              }
+            })
+          }
+          </h1>
+          <div className='text-center'>
+            {
+              alphabet.map(each => {
+                if (each === 'P' || each === 'L') {
+                  return (
+                    <>
+                      <button onClick={clickedButton} key={each}
+                        className={
+                          correctLetters.includes(each) ? 'bg-success fs-1 mx-1 my-1'
+                          : (wrongLetters.includes(each) ? 'bg-danger fs-1 mx-1 my-1' : 'fs-1 mx-1 my-1')
+                        }
+                      >{each}</button>
+                      <br />
+                    </>
+                  );
+                }
+                return (
+                  <>
+                    <button onClick={clickedButton} key={each}
+                      className={
+                            correctLetters.includes(each) ? 'bg-success fs-1 mx-1 my-1'
+                            : (wrongLetters.includes(each) ? 'bg-danger fs-1 mx-1 my-1' : 'fs-1 mx-1 my-1')
+                          }
+                    >{each}</button>
+                  </>
+                );
+              })
             }
-          })
-        }
-        </h1>
+          </div>
+        </div>
       </div>
-
     </div>
   );
 };
