@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { alphabet, drawHangman } from '../container/draw-letter';
 
@@ -8,15 +8,32 @@ const Hangman = () => {
   const [ wrong, setWrong ] = useState(0);
   const [ correctLetters, setCorrectLetters ] = useState([]);
   const [ wrongLetters, setWrongLetters ] = useState([]);
+  const [ solved, setSolved ] = useState(false);
   const canvasRef = useRef(null);
 
   const wordArray = testWord.toUpperCase().split('');
+  const wordArrayNoSpace = wordArray.filter(ele => ele !== ' ');
 
   useEffect(() => {
     drawHangman(canvasRef, wrong);
   }, [wrong]);
 
+  useEffect(() => {
+    const toCheck = (currentEle) => correctLetters.includes(currentEle);
+    const solvedOrNot = wordArrayNoSpace.every(toCheck);
+    console.log('solvedOrNot: ', solvedOrNot);
+    if (solvedOrNot) {
+      setSolved(solvedOrNot);
+      console.log('You solved it');
+    } else {
+      console.log('Still need more letters');
+    }
+  }, [correctLetters, wordArrayNoSpace]);
+
   const clickedButton = e => {
+    if (wrong >= 7 || solved) {
+      return null;
+    }
     if(e.target.nodeName === 'BUTTON') {
       const selectedLetter = e.target.innerText;
       // if the clicked letter is included in the word
@@ -53,64 +70,67 @@ const Hangman = () => {
   }
 
   return (
-    <div className="container font-monospace">
-      {console.log('RENDERED')}
-      <div className='row justify-content-md-center'>
-        <div className='col-md-6 row justify-content-md-center'>
-          <canvas ref={canvasRef} />
-        </div>
-        <div className='col-md-6 align-items-center flex-nowrap'>
-          <h1 className='text-center my-3'>
-          {
-            wordArray.map(letter => {
-              if (letter === ' ') {
-                return (
-                  <br />
-                );
-              } else {
-                if (correctLetters.includes(letter)) {
-                  return ` ${letter}`;
-                } else {
-                  return ' _';
-                }
-              }
-            })
-          }
-          </h1>
-          <div className='text-center my-3'
-            onClick={clickedButton}
-          >
+    <>
+      { solved ? <h1>You got it!</h1> : null }
+      <div className="container font-monospace">
+        {console.log('RENDERED')}
+        <div className='row justify-content-md-center align-items-center'>
+          <div className='col-md-6 row justify-content-md-center'>
+            <canvas ref={canvasRef} />
+          </div>
+          <div className='col-md-6 flex-nowrap'>
+            <h1 className='text-center my-3'>
             {
-              alphabet.map(each => {
-                if (each === 'P' || each === 'L') {
+              wordArray.map((letter, index) => {
+                if (letter === ' ') {
                   return (
-                    <>
-                      <button key={each}
-                        className={
-                          correctLetters.includes(each) ? 'bg-success fs-1 mx-1 my-1'
-                          : (wrongLetters.includes(each) ? 'bg-danger fs-1 mx-1 my-1' : 'bg-secondary fs-1 mx-1 my-1')
-                        }
-                      >{each}</button>
-                      <br />
-                    </>
+                    <span key={index}><br /></span>
                   );
+                } else {
+                  if (correctLetters.includes(letter)) {
+                    return <span key={index}> {letter}</span>;
+                  } else {
+                    return <span key={index}> _</span>;
+                  }
                 }
-                return (
-                  <>
-                    <button key={each}
-                      className={
+              })
+            }
+            </h1>
+            <div className='text-center my-3'
+              onClick={clickedButton}
+            >
+              {
+                alphabet.map(each => {
+                  if (each === 'P' || each === 'L') {
+                    return (
+                      <Fragment  key={each}>
+                        <button
+                          className={
                             correctLetters.includes(each) ? 'bg-success fs-1 mx-1 my-1'
                             : (wrongLetters.includes(each) ? 'bg-danger fs-1 mx-1 my-1' : 'bg-secondary fs-1 mx-1 my-1')
                           }
-                    >{each}</button>
-                  </>
-                );
-              })
-            }
+                        >{each}</button>
+                        <br />
+                      </Fragment>
+                    );
+                  }
+                  return (
+                    <Fragment key={each}>
+                      <button
+                        className={
+                              correctLetters.includes(each) ? 'bg-success fs-1 mx-1 my-1'
+                              : (wrongLetters.includes(each) ? 'bg-danger fs-1 mx-1 my-1' : 'bg-secondary fs-1 mx-1 my-1')
+                            }
+                      >{each}</button>
+                    </Fragment>
+                  );
+                })
+              }
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
