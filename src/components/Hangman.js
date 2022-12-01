@@ -1,17 +1,18 @@
 import React, { Fragment } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { alphabet, drawHangman } from '../container/draw-letter';
-
-const testWord = 'hello world';
+import axios from 'axios';
 
 const Hangman = () => {
   const [ wrong, setWrong ] = useState(0);
   const [ correctLetters, setCorrectLetters ] = useState([]);
   const [ wrongLetters, setWrongLetters ] = useState([]);
   const [ solved, setSolved ] = useState(false);
+  const [ finished, setFinished ] = useState(false);
+  const [ word, setWord ] = useState('');
   const canvasRef = useRef(null);
 
-  const wordArray = testWord.toUpperCase().split('');
+  const wordArray = word.toUpperCase().split('');
   const wordArrayNoSpace = wordArray.filter(ele => ele !== ' ');
 
   useEffect(() => {
@@ -19,14 +20,20 @@ const Hangman = () => {
   }, [wrong]);
 
   useEffect(() => {
+    (async () => {
+      const { data } = await axios.get('https://api.api-ninjas.com/v1/randomword', {
+        headers: { 'X-Api-Key': 'gTpEiDkoC1jMn3pJNRv8pQ==PgYDOsNZNmjx7ufz' }
+      })
+      const theWord = data.word;
+      setWord(theWord);
+    })();
+  }, []);
+
+  useEffect(() => {
     const toCheck = (currentEle) => correctLetters.includes(currentEle);
-    const solvedOrNot = wordArrayNoSpace.every(toCheck);
-    console.log('solvedOrNot: ', solvedOrNot);
+    const solvedOrNot = wordArrayNoSpace.every(toCheck) && correctLetters.length > 0;
     if (solvedOrNot) {
       setSolved(solvedOrNot);
-      console.log('You solved it');
-    } else {
-      console.log('Still need more letters');
     }
   }, [correctLetters, wordArrayNoSpace]);
 
@@ -34,6 +41,7 @@ const Hangman = () => {
     if (wrong >= 7 || solved) {
       return null;
     }
+
     if(e.target.nodeName === 'BUTTON') {
       const selectedLetter = e.target.innerText;
       // if the clicked letter is included in the word
@@ -59,7 +67,8 @@ const Hangman = () => {
 
           if (wrong >= 6) {
             setWrong(prev => prev + 1);
-            return console.log('END OF GAME!')
+            setFinished(true);
+            return null;
           }
 
           setWrong(prev => prev + 1);
@@ -69,11 +78,13 @@ const Hangman = () => {
     }
   }
 
+  const refreshPage = () => {
+    window.location.reload(true);
+  }
+
   return (
     <>
-      { solved ? <h1>You got it!</h1> : null }
       <div className="container font-monospace">
-        {console.log('RENDERED')}
         <div className='row justify-content-md-center align-items-center'>
           <div className='col-md-6 row justify-content-md-center'>
             <canvas ref={canvasRef} />
@@ -127,6 +138,17 @@ const Hangman = () => {
                 })
               }
             </div>
+            {
+            solved || finished
+            ?
+            <>
+              <h3 className='text-center'>Play Again?</h3>
+              <div className='text-center'>
+                <button className='bg-info' onClick={refreshPage} >New Game</button>
+              </div>
+            </>
+            : null
+          }
           </div>
         </div>
       </div>
