@@ -16,7 +16,7 @@ const Navbar = () => {
 
       {/* <Hangman /> */}
       <Pomodoro />
-      <Test />
+      {/* <Test /> */}
 
     </div>
   );
