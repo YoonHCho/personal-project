@@ -1,0 +1,18 @@
+.pomoall {
+  padding-top: 2px;
+}
+
+.slider {
+  height: 40px;
+  outline: 3px solid green;
+  border-radius: 20px;
+  position: relative;
+}
+
+.thumb {
+  background-color: green;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+}
