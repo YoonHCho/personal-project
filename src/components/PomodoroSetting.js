@@ -1,26 +1,38 @@
 import ReactSlider from "react-slider";
 import './pomodoro.css'
 
-const PomodoroSetting = ({setStudy}) => {
+const PomodoroSetting = ({studyMinutes, setStudyMinutes, breakMinutes, setBreakMinutes}) => {
+
+  const onStudyChange = (e) => {
+    console.log(e);
+    setStudyMinutes(e)
+    console.log(studyMinutes);
+  }
+
+  const onBreakChange = (e) => {
+    setBreakMinutes(e)
+  }
 
   return(
     <>
       <div style={{textAlign:'left'}} className='pomoall'>
-        <label>Study in Minutes</label>
+        <label>Study in Minutes: {studyMinutes}</label>
         <ReactSlider
           className={'slider'}
           thumbClassName={'thumb'}
           trackClassName={'track'}
-          value={50}
+          value={studyMinutes}
+          onChange={onStudyChange}
           min={25}
           max={150}
         />
-        <label>Break in Minutes</label>
+        <label>Break in Minutes: {breakMinutes}</label>
         <ReactSlider
           className={'slider'}
           thumbClassName={'thumb'}
           trackClassName={'track'}
-          value={10}
+          value={breakMinutes}
+          onChange={setBreakMinutes}
           min={5}
           max={25}
         />
