@@ -5,12 +5,52 @@ import 'react-circular-progressbar/dist/styles.css';
 
 const Pomodoro = () => {
   const [ counting, setCounting ] = useState(false);
-  const [ studyMinutes, setStudyMinutes ] = useState(100);
-  const [ breakMinutes, setBreakMinutes ] = useState(5);
-  const [ seconds, setSeconds ] = useState(12);
+  const [ studyMinutes, setStudyMinutes ] = useState(50);
+  const [ breakMinutes, setBreakMinutes ] = useState(10);
+  const [ seconds, setSeconds ] = useState(0);
 
-  const setStudy = () => {
-    setStudyMinutes(25);
+  // useEffect(() => {
+  //   const timeID = setInterval(() => {
+  //     console.log('clicked');
+  //     if (seconds === 0) {
+  //       setSeconds(prev => {
+  //         console.log(typeof prev);
+  //         return prev + 59;
+  //       });
+  //       setStudyMinutes(prev => prev - 1)
+  //     } else {
+  //       setSeconds(prev => prev - 1);
+  //     }
+  //   }, 1000)
+  //   // console.log(typeof seconds);
+
+  //   if (studyMinutes === 0 && seconds === 0) {
+  //     clearInterval(timeID);
+  //   };
+  // }, []);
+
+  const startCount = () => {
+        const timeID = setInterval(() => {
+      console.log('clicked');
+      if (seconds === 0) {
+        setSeconds(prev => {
+          console.log(typeof prev);
+          return prev + 59;
+        });
+        setStudyMinutes(prev => prev - 1)
+      } else {
+        setSeconds(prev => prev - 1);
+      }
+    }, 1000)
+    // console.log(typeof seconds);
+
+    if (studyMinutes === 0 && seconds === 0) {
+      clearInterval(timeID);
+    };
+    // if (seconds === 0) {
+    //   setStudyMinutes(prev => prev - 1);
+    //   setSeconds(prev => prev + 59);
+    // }
   }
 
   // useEffect(() => {
@@ -41,6 +81,7 @@ const Pomodoro = () => {
       {/* {console.log(typeof minutes)}
       {console.log(typeof seconds)} */}
       <div style={{ width: 460, height: 460 }}>
+        {/* <CircularProgressbar value={studyMinutes} minValue={0} maxValue={studyMinutes} text={ `${studyMinutes.toLocaleString(undefined,{minimumIntegerDigits: 2})}:${seconds.toLocaleString(undefined,{minimumIntegerDigits: 2})}` } /> */}
         <CircularProgressbar value={studyMinutes} minValue={0} maxValue={studyMinutes} text={ `${studyMinutes.toLocaleString(undefined,{minimumIntegerDigits: 2})}:${seconds.toLocaleString(undefined,{minimumIntegerDigits: 2})}` } />
       </div>
 
@@ -48,7 +89,7 @@ const Pomodoro = () => {
       {/* <div>{minutes.toLocaleString(undefined,{minimumIntegerDigits: 2})}:{seconds.toLocaleString(undefined,{minimumIntegerDigits: 2})}</div> */}
 
       {/* PLAY ICON */}
-      <svg xmlns="http://www.w3.org/2000/svg" width="100" viewBox="0 0 24 24"  fill="currentColor" className="w-6 h-6" onClick={checkClick}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="100" viewBox="0 0 24 24"  fill="currentColor" className="w-6 h-6" onClick={startCount}>
         <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clipRule="evenodd" />
       </svg>
 
@@ -66,7 +107,12 @@ const Pomodoro = () => {
       </button>
 
 
-      <PomodoroSetting setStudy={setStudy} />
+      <PomodoroSetting
+        studyMinutes={studyMinutes}
+        setStudyMinutes={setStudyMinutes}
+        breakMinutes={breakMinutes}
+        setBreakMinutes={setBreakMinutes}
+      />
     </>
 
   );
