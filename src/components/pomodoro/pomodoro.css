@@ -13,15 +13,16 @@
   border-radius: 20px;
 }
 
-.timer {
-  width: 460px;
-  height: 460px;
-}
-
 .slider.red {
   outline: 2px solid red;
 }
 
 .slider.red .thumb {
   background-color: red;
+}
+
+@media screen, print and (min-width: 992px) {
+  .timer {
+    width: 672px;
+  }
 }
