@@ -2,10 +2,15 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useContext, useState, useEffect, useRef } from "react";
 import AppContext from "../../lib/app-context";
+import useSound from "use-sound";
+import finished from "../../assets/sounds/finished.mp3";
 
 const Timer = () => {
   const settingsInfo = useContext(AppContext);
-  console.log(settingsInfo);
+  const [startSound] = useSound(finished, {
+    interrupt: true,
+    volume: 1,
+  });
 
   const [isPaused, setIsPaused] = useState(true);
   const [mode, setMode] = useState("study");
@@ -22,6 +27,7 @@ const Timer = () => {
 
   useEffect(() => {
     const switchMode = () => {
+      startSound();
       const nextMode = modeRef.current === "study" ? "break" : "study";
       const nextSeconds =
         (nextMode === "study"
@@ -49,7 +55,7 @@ const Timer = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [settingsInfo]);
+  }, [settingsInfo, startSound]);
 
   const totalSecs =
     mode === "study"
