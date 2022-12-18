@@ -24,7 +24,7 @@ const Hangman = () => {
       const { data } = await axios.get(
         "https://api.api-ninjas.com/v1/randomword",
         {
-          headers: { "X-Api-Key": "gTpEiDkoC1jMn3pJNRv8pQ==PgYDOsNZNmjx7ufz" },
+          headers: { "X-Api-Key": process.env.REACT_APP_RANDOM_WORD_API },
         }
       );
       const theWord = data.word;
