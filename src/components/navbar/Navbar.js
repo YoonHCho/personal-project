@@ -1,23 +1,24 @@
 // import { useState } from 'react';
-// import Hangman from "../hangman/Hangman";
+import Hangman from "../hangman/Hangman";
 import Pomodoro from "../pomodoro/Pomodoro";
-import Test from "../Test";
+import Message from "../message/Message";
+// import Test from "../Test";
 
 const Navbar = () => {
   return (
     <div className="container">
       <nav className="nav justify-content-center nav-tabs">
         <a
-          href="/"
+          href="hangman"
           className="nav-item nav-link"
           name="hangman"
         >
           Hangman
         </a>
         <a
-          href="/"
+          href="pomodoro"
           className="nav-item nav-link active"
-          name="profile"
+          name="pomodoro"
         >
           Pomodoro
         </a>
@@ -37,9 +38,9 @@ const Navbar = () => {
         </a>
       </nav>
 
-      {/* <Hangman /> */}
+      <Hangman />
       <Pomodoro />
-      <Test />
+      <Message />
     </div>
   );
 };
