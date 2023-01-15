@@ -1,0 +1,33 @@
+* {
+  font-family: monospace;
+  margin: 0;
+  padding: 0;
+}
+
+.sign {
+  text-align: center;
+}
+
+ul {
+  list-style-position: inside;
+  text-align: center;
+}
+
+input {
+  margin: 7px 0;
+  border-radius: 5px;
+  width: 155px;
+  height: 30px;
+  padding-left: 5px;
+}
+
+.sign-button {
+  margin-top: 15px;
+  border-radius: 5px;
+  width: 85px;
+  height: 25px;
+}
+
+.btn-link {
+  border: none;
+}
