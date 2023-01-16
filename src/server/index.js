@@ -40,7 +40,7 @@ app.get("/messages", (req, res) => {
   res.send("is this working?");
 });
 
-app.post("/sign-up", (req, res) => {
+app.post("/", (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username) {
@@ -88,7 +88,7 @@ app.post("/sign-up", (req, res) => {
     })
     .then((result) => {
       if (result.rows.length === 0) {
-        // throw new UsernameError(400, 'User name is already taken');
+        // throw new UsernameError(400, 'Username is already taken');
         console.log("User name is already taken");
       }
       const [user] = result.rows;
