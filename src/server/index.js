@@ -1,10 +1,8 @@
 require("dotenv/config");
-const { default: axios } = require("axios");
 const argon2 = require("argon2");
 const express = require("express");
 const pg = require("pg");
-const { knex } = require("knex");
-const { bcrypt } = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // const db = new pg.Pool({
 //   connectionString: process.env.DATABASE.URL,
@@ -40,7 +38,7 @@ app.get("/messages", (req, res) => {
   res.send("is this working?");
 });
 
-app.post("/", (req, res) => {
+app.post("/register", (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username) {
@@ -53,26 +51,10 @@ app.post("/", (req, res) => {
     console.log("E-mail is a required field");
   } else if (!password) {
     // throw new ClientError(400, 'Password is a required fields');
-    res.send("Password is a required fields");
-    console.log("Password is a required fields");
+    res.send("Password is a required field");
+    console.log("Password is a required field");
   }
 
-  // ********* if pg.pool works delete
-  // const hash = bcrypt.hashSync(password);
-  // db.transaction((trx) => {
-  //   trx
-  //     .insert({
-  //       username: username,
-  //       email: email,
-  //       hashedpassword: hash,
-  //     })
-  //     .into("users")
-  //     .returning("username", "email", "joinedat");
-  // });
-
-  // ******************************************************************************************
-
-  // ************* MAY NOT NEED ARGON2 ***********
   argon2
     .hash(password)
     .then((hashedpassword) => {
@@ -88,15 +70,55 @@ app.post("/", (req, res) => {
     })
     .then((result) => {
       if (result.rows.length === 0) {
-        // throw new UsernameError(400, 'Username is already taken');
-        console.log("User name is already taken");
+        // throw new UsernameError(409, 'Username is already taken');
+        console.log("Username is already taken");
+        res.status(409).json({ error: "Username taken" });
+      } else {
+        const [user] = result.rows;
+        res.status(201).json(user);
       }
-      const [user] = result.rows;
-      res.status(201).json(user);
     })
     .catch((err) => console.log(err));
+});
 
-  // res.send(password);
+app.post("/sign-in", (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    // throw new ClientError(401, 'Invalid login');
+    res.send("Invalid login");
+    console.log("Invalid login");
+  }
+
+  const sql = `
+    SELECT "userid",
+           "hashedpassword"
+    FROM   "users"
+    WHERE  "username" = $1
+  `;
+
+  const params = [username];
+  db.query(sql, params)
+    .then((result) => {
+      const [user] = result.rows;
+      if (!user) {
+        // throw new ClientError(401, 'Invalid Login');
+        console.log("Invalid Login");
+        res.status(401).json({ error: "Invalid Login" });
+      }
+      const { userid, hashedpassword } = user;
+      return argon2.verify(hashedpassword, password).then((isMatching) => {
+        if (!isMatching) {
+          // throw new ClientError(401, 'Invalid login');
+          console.log("Invalid Login");
+          res.status(401).json({ error: "Invalid Login" });
+        }
+        const payload = { userid, username };
+        const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+        res.json({ token, user: payload });
+      });
+    })
+    .catch((err) => console.error(err));
 });
 
 const PORT = process.env.PORT || 3001;

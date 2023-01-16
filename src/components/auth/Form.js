@@ -1,6 +1,6 @@
 import AppContext from "../../lib/app-context";
 import { useContext, useState } from "react";
-import axios from "axios";
+import axios from "../../api/axios";
 
 const Form = () => {
   const settingsInfo = useContext(AppContext);
@@ -8,6 +8,8 @@ const Form = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [taken, setTaken] = useState(false);
+  const REGISTER_URL = "/register";
+  const SIGN_IN_URL = "/sign-in";
 
   const signInOrUp = settingsInfo.haveAcct ? `Sign In` : `Sign Up`;
   const account = settingsInfo.haveAcct
@@ -18,32 +20,61 @@ const Form = () => {
     : `Already registered? `;
   const logRegister = settingsInfo.haveAcct ? `Register` : `Log In`;
 
-  const handleLogIn = (e) => {
+  const handleLogIn = async (e) => {
     e.preventDefault();
-    console.log(e);
-    console.log("THIS IS HANDLE Log In");
+    console.log("username: ", username);
+    console.log("password: ", password);
+
+    try {
+      const response = await axios.post(
+        SIGN_IN_URL,
+        JSON.stringify({ username, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log("RESPONSE", response.data);
+      console.log("response.data.user.username: ", response.data.user.username);
+      console.log("response.data.token: ", response.data.token);
+
+      if (response.data.user.username && response.data.token) {
+        settingsInfo.onSignIn(response.data);
+      }
+    } catch (err) {
+      console.error("console.error: ", err);
+      console.log("console.log:", err);
+    }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (taken) {
       setTaken(false);
     }
 
-    axios
-      .post("/", {
-        username: e.target.username.value,
-        email: e.target.email.value,
-        password: e.target.password.value,
-      })
-      .then((response) => {
-        console.log("RESPONSE:", response.data);
-      })
-      .catch((err) => {
-        setTaken(true);
-        console.error(err);
-        console.log(err);
-      });
+    // setUsername(e.target.username.value);
+    // setEmail(e.target.email.value);
+    // setPassword(e.target.password.value);
+
+    // username: e.target.username.value, email: e.target.email.value, password: e.target.password.value
+
+    try {
+      const response = await axios.post(
+        REGISTER_URL,
+        JSON.stringify({ username, email, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      settingsInfo.setHaveAcct(true);
+      console.log(response);
+    } catch (err) {
+      setTaken(true);
+      console.error(err);
+      console.log(err);
+    }
 
     setUsername("");
     setEmail("");
@@ -58,7 +89,14 @@ const Form = () => {
         {toggle}
         <button
           className="btn-link"
-          onClick={() => settingsInfo.setHaveAcct(!settingsInfo.haveAcct)}
+          onClick={() => {
+            settingsInfo.setHaveAcct(!settingsInfo.haveAcct);
+            if (!settingsInfo.haveAcct) {
+              window.location.hash = "sign-in";
+            } else if (settingsInfo.haveAcct) {
+              window.location.hash = "register";
+            }
+          }}
         >
           {logRegister}
         </button>
@@ -113,7 +151,7 @@ const Form = () => {
       </form>
       {taken ? (
         <p style={{ marginTop: "15px" }}>
-          Username is already taken, Please try again with different username
+          Username taken. Try with different username.
         </p>
       ) : (
         ""

@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import AppContext from "../../lib/app-context";
 import "./auth.css";
 import Form from "./Form";
 
 const Auth = () => {
+  const settingsInfo = useContext(AppContext);
+  const { currentUser, setCurrentUser, onSignIn } = settingsInfo;
+
   const [loopNum, setLoopNum] = useState(0);
   const [isDeleting, SetIsDeleting] = useState(false);
   const toRotate = [
@@ -51,7 +54,9 @@ const Auth = () => {
   }, [text]);
 
   return (
-    <AppContext.Provider value={{ haveAcct, setHaveAcct }}>
+    <AppContext.Provider
+      value={{ currentUser, setCurrentUser, haveAcct, setHaveAcct, onSignIn }}
+    >
       <section className="banner" id="home">
         <div className="container font-monospace text-center">
           <div className="row justify-content-center align-items-center text-center">
