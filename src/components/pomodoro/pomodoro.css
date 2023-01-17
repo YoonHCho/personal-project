@@ -21,6 +21,10 @@
   background-color: red;
 }
 
+.back-btn {
+  width: 110px;
+}
+
 @media screen, print and (min-width: 992px) {
   .timer {
     width: 672px;

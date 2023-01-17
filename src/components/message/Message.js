@@ -1,5 +1,9 @@
 const Message = () => {
-  return <div>This is Message Component</div>;
+  return (
+    <div className="container">
+      <p>This is messages componenet</p>
+    </div>
+  );
 };
 
 export default Message;

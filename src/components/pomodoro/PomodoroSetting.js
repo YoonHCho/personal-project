@@ -33,7 +33,10 @@ const PomodoroSetting = () => {
             />
           </div>
           <div className="text-center">
-            <button onClick={() => settingsInfo.setShowSettings(false)}>
+            <button
+              onClick={() => settingsInfo.setShowSettings(false)}
+              className="back-btn"
+            >
               Back to Timer
             </button>
           </div>
