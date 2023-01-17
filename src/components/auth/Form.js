@@ -91,11 +91,11 @@ const Form = () => {
           className="btn-link"
           onClick={() => {
             settingsInfo.setHaveAcct(!settingsInfo.haveAcct);
-            if (!settingsInfo.haveAcct) {
-              window.location.hash = "sign-in";
-            } else if (settingsInfo.haveAcct) {
-              window.location.hash = "register";
-            }
+            // if (!settingsInfo.haveAcct) {
+            //   window.location.hash = "sign-in";
+            // } else if (settingsInfo.haveAcct) {
+            //   window.location.hash = "register";
+            // }
           }}
         >
           {logRegister}

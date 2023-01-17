@@ -2,11 +2,10 @@ import Navbar from "./components/navbar/Navbar";
 import Auth from "./components/auth/Auth";
 import { useState } from "react";
 import AppContext from "./lib/app-context";
-// import { parseRoute } from "./lib/parse-route";
 // import { PageContainer } from "./components/auth/page-container";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   // const [path, setPath] = useState("");
 
   // useEffect(() => {

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useReducer } from "react";
 import { alphabet, drawHangman } from "../../container/draw-letter";
 import axios from "axios";
 
@@ -11,6 +11,7 @@ const Hangman = () => {
   const [finished, setFinished] = useState(false);
   const [word, setWord] = useState("");
   const canvasRef = useRef(null);
+  const [reducerVal, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const wordArray = word.toUpperCase().split("");
   const wordArrayNoSpace = wordArray.filter((ele) => ele !== " ");
@@ -30,7 +31,7 @@ const Hangman = () => {
       const theWord = data.word;
       setWord(theWord);
     })();
-  }, []);
+  }, [reducerVal]);
 
   useEffect(() => {
     const toCheck = (currentEle) => correctLetters.includes(currentEle);
@@ -81,8 +82,15 @@ const Hangman = () => {
     }
   };
 
-  const refreshPage = () => {
-    window.location.reload(true);
+  const playAgain = () => {
+    // window.location.reload(true);
+    setWrong(0);
+    setCorrectLetters([]);
+    setWrongLetters([]);
+    setSolved(false);
+    setFinished(false);
+    setWord("");
+    forceUpdate();
   };
 
   return (
@@ -110,10 +118,7 @@ const Hangman = () => {
                 }
               })}
             </h1>
-            <div
-              className="text-center my-3"
-              onClick={clickedButton}
-            >
+            <div className="text-center my-3" onClick={clickedButton}>
               {alphabet.map((each) => {
                 if (each === "P" || each === "L") {
                   return (
@@ -156,7 +161,8 @@ const Hangman = () => {
                 <div className="text-center">
                   <button
                     className="bg-info"
-                    onClick={refreshPage}
+                    onClick={playAgain}
+                    style={{ width: "75px" }}
                   >
                     New Game
                   </button>
