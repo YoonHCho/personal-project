@@ -5,7 +5,7 @@ import AppContext from "./lib/app-context";
 // import { PageContainer } from "./components/auth/page-container";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState("null");
   // const [path, setPath] = useState("");
 
   // useEffect(() => {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Home from "../home/Home";
 import Pomodoro from "../pomodoro/Pomodoro";
 import Hangman from "../hangman/Hangman";
-import Message from "../message/Message";
+import Messages from "../messages/Messages";
 import { parseRoute } from "../../lib/parse-route";
 // import Test from "../Test";
 
@@ -85,7 +85,7 @@ const Navbar = () => {
         ) : path === "hangman" ? (
           <Hangman />
         ) : path === "messages" ? (
-          <Message />
+          <Messages />
         ) : (
           ""
         )}
