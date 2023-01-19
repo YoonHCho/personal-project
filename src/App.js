@@ -5,7 +5,11 @@ import AppContext from "./lib/app-context";
 // import { PageContainer } from "./components/auth/page-container";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState("null");
+  const [currentUser, setCurrentUser] = useState(null);
+  // const [currentUser, setCurrentUser] = useState({
+  //   userid: 1,
+  //   username: "Yoon",
+  // });
   // const [path, setPath] = useState("");
 
   // useEffect(() => {
@@ -18,10 +22,8 @@ function App() {
 
   const onSignIn = (response) => {
     const { user, token } = response;
-    console.log("user.username: ", user.username);
-    console.log("token: ", token);
     window.localStorage.setItem("react-context-jwt", token);
-    setCurrentUser(user.username);
+    setCurrentUser(user);
     // window.location.hash = "home";
   };
 

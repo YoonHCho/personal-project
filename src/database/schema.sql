@@ -11,10 +11,13 @@ CREATE TABLE users (
 CREATE TABLE comments (
 	commentId SERIAL PRIMARY KEY,
 	userId INT NOT NULL,
+	username TEXT NOT NULL,
 	comments TEXT NOT NULL,
 	commentedAt TIMESTAMPTZ NOT NULL default now(),
 	FOREIGN KEY(userId)
-		REFERENCES users(userId)
+		REFERENCES users(userId),
+	FOREIGN KEY(username)
+		REFERENCES users(username)
 );
 
 
