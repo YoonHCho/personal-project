@@ -176,7 +176,34 @@ app.post("/messages", (req, res) => {
       console.log("Invalid userMessage");
       res.status(401).json({ error: "Invalid userMessage" });
     }
-    res.json(userMessage);
+    res.status(201).json(userMessage);
+  });
+});
+
+app.delete("/messages/delete/:commentid", (req, res) => {
+  const commentid = Number(req.params.commentid);
+
+  if (!commentid || typeof commentid !== "number") {
+    // throw new ClientError(404, 'Select a post to delete');
+    console.log("Select a post to delete");
+    res.status(404).send("Select a post to delete");
+  }
+
+  const sql = `
+    DELETE FROM "comments"
+    WHERE       "commentid" = ($1)
+    RETURNING *;
+  `;
+
+  const params = [commentid];
+  db.query(sql, params).then((result) => {
+    if (!result) {
+      // throw new ClientError(401, 'No message to delete');
+      console.log("No message to delete");
+      res.status(401).json({ error: "No message to delete" });
+    } else {
+      res.sendStatus(204);
+    }
   });
 });
 

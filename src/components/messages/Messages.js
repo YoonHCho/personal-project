@@ -44,6 +44,7 @@ const Messages = () => {
   const MSG_URL = "/messages";
   const MSG_POSTS_URL = "/messages/posts";
   const MSG_USERS_URL = "/messages/users";
+  const MSG_DELETE_URL = "/messages/delete/";
 
   useEffect(() => {
     const getPosts = async () => {
@@ -65,10 +66,6 @@ const Messages = () => {
     e.preventDefault();
     const msg = e.target.post.value;
 
-    console.log(userid);
-    console.log(username);
-    console.log(msg);
-
     try {
       const msgPosting = await axios.post(
         MSG_URL,
@@ -84,6 +81,18 @@ const Messages = () => {
       console.log("console.log:", err);
     }
     setPost("");
+    forceUpdate();
+  };
+
+  const handleDelete = async (e) => {
+    const idToDelete = Number(e);
+
+    try {
+      await axios.delete(`${MSG_DELETE_URL}${idToDelete}`);
+    } catch (err) {
+      console.log("Something went wrong", err);
+    }
+
     forceUpdate();
   };
 
@@ -115,7 +124,7 @@ const Messages = () => {
         </div>
         {/* NEED TO START USING THE USER'S INFORMATIONS FOR POSTING */}
         <div className="main-content">
-          <h1>{username} types...</h1>
+          <h1>{username} says...</h1>
           <form onSubmit={handlePost}>
             <label className="post-cont">
               <textarea
@@ -126,7 +135,7 @@ const Messages = () => {
                 placeholder="Leave me a message"
                 required
               ></textarea>
-              <section className="post-btn-cont messages text-right">
+              <section className="post-btn-cont time-font">
                 <button className="post-btn">Post</button>
               </section>
             </label>
@@ -144,8 +153,22 @@ const Messages = () => {
                   id={ele.commentid}
                 >
                   <h1>{ele.username} said,</h1>
-                  <p className="msg-font">"{ele.comments}"</p>
+                  <p className="msg-font font-blue">"{ele.comments}"</p>
                   <p className="time-font">On {ele.commentedat}</p>
+                  {username === "Yoon" || userid === ele.userid ? (
+                    <aside className="time-font mt-10px">
+                      <button className="post-btn">Edit</button>
+                      <button
+                        className="post-btn ml-15px"
+                        name="delete"
+                        onClick={() => handleDelete(ele.commentid)}
+                      >
+                        Delete
+                      </button>
+                    </aside>
+                  ) : (
+                    ""
+                  )}
                 </div>
               );
             })
