@@ -34,8 +34,36 @@ const app = express();
 
 app.use(express.json());
 
-app.get("/messages", (req, res) => {
-  res.send("is this working?");
+// to get the total rows of comments, used in front-end to display total posts and render each post to main content
+app.get("/messages/posts", (req, res) => {
+  const sql = `
+    SELECT * 
+    FROM "comments"
+    ORDER BY "commentedat" DESC;
+  `;
+
+  db.query(sql)
+    .then((result) => {
+      if (!result) {
+        console.log("no result");
+      }
+      res.status(200).send(result.rows);
+    })
+    .catch((err) => console.log("error in getting GET request", err));
+});
+
+app.get("/messages/users", (req, res) => {
+  const sql = `
+    SELECT count(*)
+    FROM   "users"
+  `;
+
+  db.query(sql).then((result) => {
+    if (!result) {
+      console.log("no result");
+    }
+    res.status(200).send(result.rows[0]);
+  });
 });
 
 app.post("/register", (req, res) => {
@@ -86,7 +114,7 @@ app.post("/sign-in", (req, res) => {
 
   if (!username || !password) {
     // throw new ClientError(401, 'Invalid login');
-    res.send("Invalid login");
+    res.status(401).send("Invalid login");
     console.log("Invalid login");
   }
 
@@ -105,20 +133,51 @@ app.post("/sign-in", (req, res) => {
         // throw new ClientError(401, 'Invalid Login');
         console.log("Invalid Login");
         res.status(401).json({ error: "Invalid Login" });
+      } else {
+        const { userid, hashedpassword } = user;
+        return argon2.verify(hashedpassword, password).then((isMatching) => {
+          if (!isMatching) {
+            // throw new ClientError(401, 'Invalid login');
+            console.log("Invalid Login");
+            res.status(401).json({ error: "Invalid Login" });
+          }
+          const payload = { userid, username };
+          const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+          res.json({ token, user: payload });
+        });
       }
-      const { userid, hashedpassword } = user;
-      return argon2.verify(hashedpassword, password).then((isMatching) => {
-        if (!isMatching) {
-          // throw new ClientError(401, 'Invalid login');
-          console.log("Invalid Login");
-          res.status(401).json({ error: "Invalid Login" });
-        }
-        const payload = { userid, username };
-        const token = jwt.sign(payload, process.env.TOKEN_SECRET);
-        res.json({ token, user: payload });
-      });
     })
     .catch((err) => console.error(err));
+});
+
+app.post("/messages", (req, res) => {
+  const { userid, username, comments } = req.body;
+  if (!comments) {
+    // throw new ClientError(406, 'Mesage is a required field');
+    res.status(401).send("Mesage is a required field");
+    console.log("Mesage is a required field");
+  } else if (!userid || !username) {
+    // throw new ClientError(404, 'Not logged in');
+    res.status(404).send("Not logged in");
+    console.log("Not logged in");
+  }
+
+  const sql = `
+    INSERT INTO "comments" ("userid", "username", "comments")
+    VALUES                 ($1, $2, $3)
+    RETURNING *;
+  `;
+
+  const params = [userid, username, comments];
+  db.query(sql, params).then((result) => {
+    const [userMessage] = result.rows;
+    if (!userMessage) {
+      // throw new ClientError(401, 'Invalid userMessage');
+      console.log("Invalid userMessage");
+      res.status(401).json({ error: "Invalid userMessage" });
+    }
+    res.json(userMessage);
+  });
 });
 
 const PORT = process.env.PORT || 3001;

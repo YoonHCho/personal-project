@@ -13,16 +13,15 @@
   flex-basis: 25%;
   position: sticky;
   align-self: flex-start;
-  margin-right: 10px;
+  margin-right: 15px;
   border-radius: 5px;
   padding: 5px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .main-content {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   background-color: white;
-  margin-left: 10px;
   border-radius: 5px;
   padding: 5px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -37,7 +36,7 @@
   background-color: inherit;
 }
 
-h1, p, b, ol, li, form, input, textarea, .post-cont {
+h1, section, button, p, b, ol, li, form, input, textarea, .post-cont {
   background-color: inherit;
   margin: 0;
 }
@@ -62,6 +61,7 @@ ul {
 
 .post-cont {
   width: 100%;
+  position: relative;
 }
 
 .post-cont textarea {
@@ -70,4 +70,29 @@ ul {
   outline: 0;
   border-bottom: 1px solid #ccc;
   padding: 5px;
+}
+
+.text-right {
+  justify-content: end;
+}
+
+.post-cont .post-btn-cont {
+  width: 20%;
+  padding: 5px;
+}
+
+.post-btn {
+  width: 100%;
+  height: 25px;
+}
+
+.time-font {
+  font-size: 0.9rem;
+  text-align: end;
+}
+
+.msg-font {
+  font-size: 1.6rem;
+  text-align: center;
+  margin: 5px;
 }

@@ -8,6 +8,7 @@ const Form = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [taken, setTaken] = useState(false);
+  const [loginError, setLoginError] = useState(false);
   const REGISTER_URL = "/register";
   const SIGN_IN_URL = "/sign-in";
 
@@ -22,8 +23,9 @@ const Form = () => {
 
   const handleLogIn = async (e) => {
     e.preventDefault();
-    console.log("username: ", username);
-    console.log("password: ", password);
+    if (loginError) {
+      setLoginError(false);
+    }
 
     try {
       const response = await axios.post(
@@ -34,17 +36,18 @@ const Form = () => {
           withCredentials: true,
         }
       );
-      console.log("RESPONSE", response.data);
-      console.log("response.data.user.username: ", response.data.user.username);
-      console.log("response.data.token: ", response.data.token);
 
       if (response.data.user.username && response.data.token) {
         settingsInfo.onSignIn(response.data);
       }
     } catch (err) {
+      setLoginError(true);
       console.error("console.error: ", err);
       console.log("console.log:", err);
     }
+
+    setUsername("");
+    setPassword("");
   };
 
   const handleRegister = async (e) => {
@@ -91,11 +94,11 @@ const Form = () => {
           className="btn-link"
           onClick={() => {
             settingsInfo.setHaveAcct(!settingsInfo.haveAcct);
-            // if (!settingsInfo.haveAcct) {
-            //   window.location.hash = "sign-in";
-            // } else if (settingsInfo.haveAcct) {
-            //   window.location.hash = "register";
-            // }
+            if (taken) {
+              setTaken(false);
+            } else if (loginError) {
+              setLoginError(false);
+            }
           }}
         >
           {logRegister}
@@ -152,6 +155,13 @@ const Form = () => {
       {taken ? (
         <p style={{ marginTop: "15px" }}>
           Username taken. Try with different username.
+        </p>
+      ) : (
+        ""
+      )}
+      {loginError ? (
+        <p style={{ marginTop: "15px" }}>
+          Log-in error, please check username/password.
         </p>
       ) : (
         ""
