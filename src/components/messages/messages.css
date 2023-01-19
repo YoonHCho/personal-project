@@ -36,7 +36,7 @@
   background-color: inherit;
 }
 
-h1, section, button, p, b, ol, li, form, input, textarea, .post-cont {
+h1, aside, section, button, p, b, ol, li, form, input, textarea, .post-cont {
   background-color: inherit;
   margin: 0;
 }
@@ -61,7 +61,6 @@ ul {
 
 .post-cont {
   width: 100%;
-  position: relative;
 }
 
 .post-cont textarea {
@@ -72,18 +71,19 @@ ul {
   padding: 5px;
 }
 
-.text-right {
+/* .text-right {
   justify-content: end;
-}
+} */
 
-.post-cont .post-btn-cont {
-  width: 20%;
+ /* .post-btn-cont {
+  width: 85px;
   padding: 5px;
-}
+} */
 
 .post-btn {
-  width: 100%;
+  width: 85px;
   height: 25px;
+  border-radius: 3px;
 }
 
 .time-font {
@@ -95,4 +95,16 @@ ul {
   font-size: 1.6rem;
   text-align: center;
   margin: 5px;
+}
+
+.mt-10px {
+  margin-top: 10px;
+}
+
+.ml-15px {
+  margin-left: 15px;
+}
+
+.font-blue {
+  color: rgb(112, 112, 112);
 }
