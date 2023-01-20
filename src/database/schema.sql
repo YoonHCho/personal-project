@@ -5,7 +5,7 @@ CREATE TABLE users (
 	username TEXT UNIQUE NOT NULL,
 	email TEXT NOT NULL,
 	hashedPassword TEXT NOT NULL,
-	joinedAt TIMESTAMPTZ NOT NULL default now()
+	joinedAt TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE comments (
@@ -13,7 +13,7 @@ CREATE TABLE comments (
 	userId INT NOT NULL,
 	username TEXT NOT NULL,
 	comments TEXT NOT NULL,
-	commentedAt TIMESTAMPTZ NOT NULL default now(),
+	commentedAt TEXT NOT NULL,
 	FOREIGN KEY(userId)
 		REFERENCES users(userId),
 	FOREIGN KEY(username)

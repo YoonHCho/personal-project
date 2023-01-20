@@ -4,13 +4,6 @@ const express = require("express");
 const pg = require("pg");
 const jwt = require("jsonwebtoken");
 
-// const db = new pg.Pool({
-//   connectionString: process.env.DATABASE.URL,
-//   ssl: {
-//     rejectUnauthorized: false,
-//   },
-// });
-
 const db = new pg.Pool({
   host: "127.0.0.1",
   port: 5432,
@@ -18,17 +11,6 @@ const db = new pg.Pool({
   password: process.env.PG_PSW,
   database: "personalProjOne",
 });
-
-// const db = knex({
-//   client: "pg",
-//   connection: {
-//     host: "127.0.0.1",
-//     port: 5432,
-//     user: "postgres",
-//     password: process.env.PG_PSW,
-//     database: "personalProjOne",
-//   },
-// });
 
 const app = express();
 
@@ -151,8 +133,8 @@ app.post("/sign-in", (req, res) => {
 });
 
 app.post("/messages", (req, res) => {
-  const { userid, username, comments } = req.body;
-  if (!comments) {
+  const { userid, username, comments, commentedat } = req.body;
+  if (!comments || !commentedat) {
     // throw new ClientError(406, 'Mesage is a required field');
     console.log("Mesage is a required field");
     res.status(401).send("Mesage is a required field");
@@ -163,12 +145,12 @@ app.post("/messages", (req, res) => {
   }
 
   const sql = `
-    INSERT INTO "comments" ("userid", "username", "comments")
-    VALUES                 ($1, $2, $3)
+    INSERT INTO "comments" ("userid", "username", "comments", "commentedat")
+    VALUES                 ($1, $2, $3, $4)
     RETURNING *;
   `;
 
-  const params = [userid, username, comments];
+  const params = [userid, username, comments, commentedat];
   db.query(sql, params).then((result) => {
     const [userMessage] = result.rows;
     if (!userMessage) {

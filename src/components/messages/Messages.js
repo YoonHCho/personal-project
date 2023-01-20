@@ -67,12 +67,17 @@ const Messages = () => {
 
   const handlePost = async (e) => {
     e.preventDefault();
+    const date = new Date();
+    const commentedat =
+      date.toString().substring(4, 15) +
+      ", " +
+      date.toString().substring(16, 24);
     const msg = e.target.post.value;
 
     try {
       const msgPosting = await axios.post(
         MSG_URL,
-        JSON.stringify({ userid, username, comments: msg }),
+        JSON.stringify({ userid, username, comments: msg, commentedat }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
