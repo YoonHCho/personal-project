@@ -20,6 +20,12 @@ CREATE TABLE comments (
 		REFERENCES users(username)
 );
 
+CREATE TABLE visits (
+	visitId SERIAL PRIMARY KEY,
+	totalVisits INT NOT NULL,
+	todayVisits INT NOT NULL
+);
+
 
 
 

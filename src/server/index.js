@@ -16,6 +16,46 @@ const app = express();
 
 app.use(express.json());
 
+app.get("/total", (req, res) => {
+  const sql = `
+    SELECT "totalvisits"
+    FROM   "visits"
+    WHERE  "visitid" = 1
+  `;
+
+  db.query(sql).then((result) => {
+    res.status(200).json(result.rows[0]);
+  });
+});
+
+app.put("/total/:num", (req, res) => {
+  const num = Number(req.params.num);
+
+  const sql = `
+    UPDATE "visits"
+    SET    "totalvisits" = ($1)
+    WHERE  "visitid" = 1
+  `;
+
+  const params = [num];
+
+  db.query(sql, params).then((result) => {
+    if (!result) {
+      console.log("Something went wrong");
+    } else {
+      res.sendStatus(201);
+    }
+  });
+});
+
+// to work on today's visit
+//
+//
+//
+//
+//
+// **************************
+
 // to get the total rows of comments, used in front-end to display total posts and render each post to main content
 app.get("/messages/posts", (req, res) => {
   const sql = `

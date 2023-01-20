@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Home from "../home/Home";
 import Pomodoro from "../pomodoro/Pomodoro";
 import Hangman from "../hangman/Hangman";
-import Messages from "../messages/Messages";
+// import Messages from "../messages/Home";
 import { parseRoute } from "../../lib/parse-route";
+import AppContext from "../../lib/app-context";
 // import Test from "../Test";
 
 const Navbar = () => {
+  const info = useContext(AppContext);
   const [path, setPath] = useState("home");
 
   const active = "nav-item nav-link active";
@@ -14,9 +16,16 @@ const Navbar = () => {
 
   const setPage = (e) => {
     const currentPath = e.target.name;
-    window.location.hash = currentPath;
-    setPath(currentPath);
-    parseRoute(window.location.hash);
+    if (currentPath === "sign-out") {
+      window.location.hash = "";
+      setPath("");
+      parseRoute(window.location.hash);
+      info.handleSignOut();
+    } else {
+      window.location.hash = currentPath;
+      setPath(currentPath);
+      parseRoute(window.location.hash);
+    }
   };
 
   return (
@@ -66,14 +75,11 @@ const Navbar = () => {
           <button
             style={{ border: "none" }}
             onClick={setPage}
-            name="messages"
+            name="sign-out"
             // className="nav-item nav-link"
-            className={path === "messages" ? active : notActive}
+            className={path === "sign-out" ? active : notActive}
           >
-            Messages
-            {/* <a href="messages" className="nav-item nav-link" name="messages">
-              Messages
-            </a> */}
+            Sign Out
           </button>
         </nav>
       </div>
@@ -84,8 +90,6 @@ const Navbar = () => {
           <Pomodoro />
         ) : path === "hangman" ? (
           <Hangman />
-        ) : path === "messages" ? (
-          <Messages />
         ) : (
           ""
         )}
