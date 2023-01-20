@@ -39,12 +39,15 @@ const Messages = () => {
   const { userid, username } = userInfo.currentUser;
   const [post, setPost] = useState("");
   const [renderPosts, setRenderPosts] = useState([]);
+  const [edit, setEdit] = useState(null);
+  const [editedPost, setEditedPost] = useState("");
   const [reducerVal, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const MSG_URL = "/messages";
   const MSG_POSTS_URL = "/messages/posts";
   const MSG_USERS_URL = "/messages/users";
   const MSG_DELETE_URL = "/messages/delete/";
+  const MSG_EDIT_URL = "/messages/edit/";
 
   useEffect(() => {
     const getPosts = async () => {
@@ -96,6 +99,28 @@ const Messages = () => {
     forceUpdate();
   };
 
+  const handleEdit = async (userid, commentid, comments) => {
+    if (!comments) {
+      setEdit(null);
+    }
+
+    try {
+      await axios.put(
+        `${MSG_EDIT_URL}${commentid}`,
+        JSON.stringify({ comments, userid }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      setEdit(null);
+    } catch (err) {
+      console.log("Something went wrong: ", err);
+    }
+
+    forceUpdate();
+  };
+
   return (
     <div className="container messages">
       <div className="summary-content">
@@ -121,6 +146,13 @@ const Messages = () => {
             <li>Be careful with humor and sarcasm.</li>
             <li>Don't post or share inappropriate material.</li>
           </ol>
+          <br />
+          <p>
+            * A User can only Edit and Delete the user's messages only, however
+            I have a Master user that can Edit and/or Delete all user's
+            messages. I have the Master user in order to delete any
+            inappropriate messages in the future.
+          </p>
         </div>
         {/* NEED TO START USING THE USER'S INFORMATIONS FOR POSTING */}
         <div className="main-content">
@@ -153,17 +185,49 @@ const Messages = () => {
                   id={ele.commentid}
                 >
                   <h1>{ele.username} said,</h1>
-                  <p className="msg-font font-blue">"{ele.comments}"</p>
+                  {edit === ele.commentid ? (
+                    <label className="post-cont">
+                      <textarea
+                        name="post"
+                        rows="3"
+                        value={editedPost}
+                        onChange={(e) => setEditedPost(e.target.value)}
+                        placeholder="This field cannot be blank"
+                        required
+                      ></textarea>
+                    </label>
+                  ) : (
+                    <p className="msg-font font-blue">"{ele.comments}"</p>
+                  )}
+
                   <p className="time-font">On {ele.commentedat}</p>
                   {username === "Yoon" || userid === ele.userid ? (
                     <aside className="time-font mt-10px">
-                      <button className="post-btn">Edit</button>
+                      <button
+                        className="post-btn"
+                        name="edit"
+                        // onClick={() =>
+                        //   handleEdit(ele.commentid, ele.comments, ele.userid)
+                        // }
+                        onClick={() => {
+                          edit === ele.commentid
+                            ? setEdit(null)
+                            : setEdit(ele.commentid);
+                          setEditedPost(ele.comments);
+                        }}
+                      >
+                        {edit === ele.commentid ? "Cancel" : "Edit"}
+                      </button>
                       <button
                         className="post-btn ml-15px"
                         name="delete"
-                        onClick={() => handleDelete(ele.commentid)}
+                        onClick={() => {
+                          edit === ele.commentid
+                            ? handleEdit(ele.userid, ele.commentid, editedPost)
+                            : handleDelete(ele.commentid);
+                        }}
                       >
-                        Delete
+                        {edit === ele.commentid ? "Confirm" : "Delete"}
                       </button>
                     </aside>
                   ) : (
@@ -174,6 +238,28 @@ const Messages = () => {
             })
           : null}
       </div>
+      {/* {edit ? (
+        <div className="main-content">
+          <h1>{username} says...</h1>
+          <form onSubmit={handlePost}>
+            <label className="post-cont">
+              <textarea
+                name="post"
+                rows="3"
+                value={post}
+                onChange={(e) => setPost(e.target.value)}
+                placeholder="Leave me a message"
+                required
+              ></textarea>
+              <section className="post-btn-cont time-font">
+                <button className="post-btn">Post</button>
+              </section>
+            </label>
+          </form>
+        </div>
+      ) : (
+        ""
+      )} */}
     </div>
   );
 };

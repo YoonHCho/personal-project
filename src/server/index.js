@@ -154,12 +154,12 @@ app.post("/messages", (req, res) => {
   const { userid, username, comments } = req.body;
   if (!comments) {
     // throw new ClientError(406, 'Mesage is a required field');
-    res.status(401).send("Mesage is a required field");
     console.log("Mesage is a required field");
+    res.status(401).send("Mesage is a required field");
   } else if (!userid || !username) {
     // throw new ClientError(404, 'Not logged in');
-    res.status(404).send("Not logged in");
     console.log("Not logged in");
+    res.status(404).send("Not logged in");
   }
 
   const sql = `
@@ -205,6 +205,42 @@ app.delete("/messages/delete/:commentid", (req, res) => {
       res.sendStatus(204);
     }
   });
+});
+
+app.put("/messages/edit/:commentid", (req, res) => {
+  const commentid = Number(req.params.commentid);
+  const { comments, userid } = req.body;
+
+  if (!commentid || typeof commentid !== "number") {
+    // throw new ClientError(404, 'Select a post to delete');
+    console.log("Select a post to delete");
+    res.status(404).send("Select a post to delete");
+  } else if (!comments || !userid) {
+    // throw new ClientError(406, 'Mesage is a required field');
+    console.log("Mesage is a required field");
+    res.status(401).send("Mesage is a required field");
+  }
+
+  const sql = `
+    UPDATE "comments"
+    SET "comments" = ($1)
+    WHERE "commentid" = ($2)
+    AND   "userid" = ($3)
+  `;
+
+  const params = [comments, commentid, userid];
+  db.query(sql, params)
+    .then((result) => {
+      const [updatedContent] = result.rows;
+      if (!result) {
+        // throw new ClientError(404, 'Something went wrong');
+        console.log("Something went wrong");
+        res.status(404).send("Something went wrong");
+      } else {
+        res.status(201).json(updatedContent);
+      }
+    })
+    .catch((err) => console.log(err));
 });
 
 const PORT = process.env.PORT || 3001;
