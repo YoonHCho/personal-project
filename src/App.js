@@ -5,11 +5,11 @@ import AppContext from "./lib/app-context";
 // import { PageContainer } from "./components/auth/page-container";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
-  // const [currentUser, setCurrentUser] = useState({
-  //   userid: 1,
-  //   username: "Yoon",
-  // });
+  // const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState({
+    userid: 1,
+    username: "Yoon",
+  });
   // const [path, setPath] = useState("");
 
   // useEffect(() => {
