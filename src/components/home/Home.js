@@ -116,16 +116,20 @@ const Home = () => {
           <b>Visited Total:</b>
           <p style={end}>{userInfo.totalvisits}</p>
         </section>
+        <section className="messages">
+          <b>Today Total:</b>
+          <p style={end}>{userInfo.todayvisits}</p>
+        </section>
       </div>
       <div className="main-container">
         <div className="main-content">
-          <p>Welcome to Messages.</p>
+          <p>Thank you for signing in.</p>
           <p>
-            You can leave a message if you wish. However, please keep online
+            You can leave a message if you wish. However, please follow online
             etiquette:
           </p>
           <ol>
-            <li>Use Respectful Language.</li>
+            <li>Use respectful language.</li>
             <li>Be aware of strong languages.</li>
             <li>Be careful with humor and sarcasm.</li>
             <li>Don't post or share inappropriate material.</li>
@@ -139,10 +143,9 @@ const Home = () => {
           </p>
           <br />
           <p>
-            * A User can only Edit and Delete the user's messages only, however
-            I have a Master user that can Edit and/or Delete all user's
-            messages. I have the Master user in order to delete any
-            inappropriate messages in the future.
+            * A User can only Edit and Delete the user's own messages only,
+            however when any inappropriate messages are found in the future, it
+            will be removed.
           </p>
         </div>
         {/* NEED TO START USING THE USER'S INFORMATIONS FOR POSTING */}
@@ -197,9 +200,6 @@ const Home = () => {
                       <button
                         className="post-btn"
                         name="edit"
-                        // onClick={() =>
-                        //   handleEdit(ele.commentid, ele.comments, ele.userid)
-                        // }
                         onClick={() => {
                           edit === ele.commentid
                             ? setEdit(null)

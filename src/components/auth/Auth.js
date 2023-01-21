@@ -41,7 +41,6 @@ const Auth = () => {
     }
   };
 
-  // UNCOMMENT ONCE FORM IS COMPLETED!!**********
   useEffect(() => {
     let ticker = setInterval(() => {
       tick();
@@ -61,9 +60,7 @@ const Auth = () => {
         <div className="container font-monospace text-center">
           <div className="row justify-content-center align-items-center text-center">
             <h1 className="text-center">Project Molla</h1>
-            <h2
-            // style={text.length > 1 ? { height: "71.98px" } : {}}
-            >{`Hello world, my name is Yoon.`}</h2>
+            <h2>{`Hello world, my name is Yoon.`}</h2>
             <h3>
               &nbsp;
               <span>{text}</span>

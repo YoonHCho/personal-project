@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.get("/total", (req, res) => {
   const sql = `
-    SELECT "totalvisits"
+    SELECT *
     FROM   "visits"
     WHERE  "visitid" = 1
   `;
@@ -48,15 +48,50 @@ app.put("/total/:num", (req, res) => {
   });
 });
 
-// to work on today's visit
-//
-//
-//
-//
-//
-// **************************
+app.put("/today/:num", (req, res) => {
+  const num = req.params.num;
 
-// to get the total rows of comments, used in front-end to display total posts and render each post to main content
+  const sql = `
+    UPDATE "visits"
+    SET    "todayvisits" = ($1)
+    WHERE  "visitid" = 1
+  `;
+
+  const params = [num];
+  db.query(sql, params).then((result) => {
+    if (!result) {
+      console.log("Something went wrong");
+    } else {
+      res.sendStatus(201);
+    }
+  });
+});
+
+app.put("/today/date/:num", (req, res) => {
+  const todayvisits = Number(req.params.num);
+  const { currentdate } = req.body;
+
+  const sql = `
+    UPDATE "visits"
+    SET    "todayvisits" = ($1),
+           "currentdate" = ($2)
+    WHERE  "visitid" = 1
+  `;
+
+  const params = [todayvisits, currentdate];
+  db.query(sql, params)
+    .then((result) => {
+      if (!result) {
+        console.log("Something went wrong");
+      } else {
+        res.sendStatus(201);
+      }
+    })
+    .catch((err) => {
+      console.log("Something went wrong", err);
+    });
+});
+
 app.get("/messages/posts", (req, res) => {
   const sql = `
     SELECT * 
