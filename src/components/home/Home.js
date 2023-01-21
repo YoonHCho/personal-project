@@ -19,16 +19,11 @@ const Home = () => {
   const [editedPost, setEditedPost] = useState("");
   const [reducerVal, forceUpdate] = useReducer((x) => x + 1, 0);
 
-  const MSG_URL =
-    "https://personal-project-production-cc4d.up.railway.app/messages";
-  const MSG_POSTS_URL =
-    "https://personal-project-production-cc4d.up.railway.app/messages/posts";
-  const MSG_USERS_URL =
-    "https://personal-project-production-cc4d.up.railway.app/messages/users";
-  const MSG_DELETE_URL =
-    "https://personal-project-production-cc4d.up.railway.app/messages/delete/";
-  const MSG_EDIT_URL =
-    "https://personal-project-production-cc4d.up.railway.app/messages/edit/";
+  const MSG_URL = "/messages";
+  const MSG_POSTS_URL = "/messages/posts";
+  const MSG_USERS_URL = "/messages/users";
+  const MSG_DELETE_URL = "/messages/delete/";
+  const MSG_EDIT_URL = "/messages/edit/";
 
   useEffect(() => {
     const getPosts = async () => {
