@@ -12,18 +12,22 @@ const jwt = require("jsonwebtoken");
 //   database: "personalProjOne",
 // });
 
-const db = new pg.Pool({
-  // host: "containers-us-west-177.railway.app",
-  host: "127.0.0.1",
-  port: 5585,
-  user: "postgres",
-  password: process.env.PG_PSW,
-  database: "railway",
-});
-
 // const db = new pg.Pool({
-//   connectionString: process.env.DATABASE_URL,
+//   // host: "containers-us-west-177.railway.app",
+//   host: "127.0.0.1",
+//   port: 5585,
+//   user: "postgres",
+//   password: process.env.PG_PSW,
+//   database: "railway",
 // });
+
+const db = new pg.Pool({
+  host: process.env.PGHOST,
+  port: process.env.PGPORT,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  database: process.env.PGDATABASE,
+});
 
 const app = express();
 
