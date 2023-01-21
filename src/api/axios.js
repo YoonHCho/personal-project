@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://personal-project-production-cc4d.up.railway.app/",
 });
