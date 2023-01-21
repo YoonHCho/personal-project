@@ -313,7 +313,7 @@ app.put("/messages/edit/:commentid", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5585;
 app.listen(PORT, () => {
-  process.stdout.write(`\n\nApp listening on port ${PORT}\n\n`);
+  console.log(`\n\nApp listening on port ${PORT}\n\n`);
 });
