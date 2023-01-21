@@ -4,22 +4,22 @@ const express = require("express");
 const pg = require("pg");
 const jwt = require("jsonwebtoken");
 
-const db = new pg.Pool({
-  host: "127.0.0.1",
-  port: 5432,
-  user: "postgres",
-  password: process.env.PG_PSW,
-  database: "personalProjOne",
-});
-
 // const db = new pg.Pool({
-//   // host: "containers-us-west-177.railway.app",
 //   host: "127.0.0.1",
-//   port: 5585,
+//   port: 5432,
 //   user: "postgres",
 //   password: process.env.PG_PSW,
-//   database: "railway",
+//   database: "personalProjOne",
 // });
+
+const db = new pg.Pool({
+  // host: "containers-us-west-177.railway.app",
+  host: "127.0.0.1",
+  port: 5585,
+  user: "postgres",
+  password: process.env.PG_PSW,
+  database: "railway",
+});
 
 // const db = new pg.Pool({
 //   connectionString: process.env.DATABASE_URL,
