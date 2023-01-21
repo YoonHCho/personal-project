@@ -8,9 +8,12 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [totalvisits, setTotalVisits] = useState(0);
   const [todayvisits, setTodayVisits] = useState(0);
-  const TOTAL_URL = "/total";
-  const TODAY_URL = "/today";
-  const DATE_URL = "/today/date";
+  const TOTAL_URL =
+    "https://personal-project-production-cc4d.up.railway.app/total";
+  const TODAY_URL =
+    "https://personal-project-production-cc4d.up.railway.app/today";
+  const DATE_URL =
+    "https://personal-project-production-cc4d.up.railway.app/today/date";
 
   const onSignIn = (response) => {
     const { user, token } = response;
