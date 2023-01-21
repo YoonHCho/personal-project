@@ -13,7 +13,11 @@ const jwt = require("jsonwebtoken");
 //   connectionString: process.env.DATABASE_URL,
 // });
 const db = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
+  host: "containers-us-west-177.railway.app",
+  port: 5585,
+  user: "postgres",
+  password: process.env.PG_PSW,
+  database: "railway",
 });
 
 const app = express();
