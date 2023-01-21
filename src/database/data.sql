@@ -1,4 +1,2 @@
--- This is used when creating a dummy data
-
-INSERT INTO "visits" ("totalvisits", "todayvisits")
-VALUES (0, 0);
+INSERT INTO "visits" ("totalvisits", "todayvisits", "currentdate")
+VALUES (0, 0, 'Jan 20 2023');

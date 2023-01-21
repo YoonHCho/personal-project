@@ -52,15 +52,10 @@ const Form = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
     if (taken) {
       setTaken(false);
     }
-
-    // setUsername(e.target.username.value);
-    // setEmail(e.target.email.value);
-    // setPassword(e.target.password.value);
-
-    // username: e.target.username.value, email: e.target.email.value, password: e.target.password.value
 
     try {
       const response = await axios.post(
