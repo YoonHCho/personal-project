@@ -1,4 +1,5 @@
 require("dotenv/config");
+// require("dotenv").config();
 const argon2 = require("argon2");
 const express = require("express");
 const pg = require("pg");
@@ -22,11 +23,10 @@ const jwt = require("jsonwebtoken");
 // });
 
 const db = new pg.Pool({
-  host: process.env.PGHOST,
-  port: process.env.PGPORT,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  database: process.env.PGDATABASE,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 const app = express();
