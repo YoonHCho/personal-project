@@ -5,35 +5,34 @@ const pg = require("pg");
 const jwt = require("jsonwebtoken");
 
 // localhost
+const PG_PSW = process.env.PG_PSW;
+const DATABASE_URL_LOCAL = `postgresql://postgres:${PG_PSW}@127.0.0.1:5432/personalProjOne?sslmode=disable`;
 
-// const PG_PSW = "Shydow123!";
-// const DATABASE_URL_LOCAL = `postgresql://postgres:${PG_PSW}@127.0.0.1:5432/personalProjOne?sslmode=disable`;
-
-// const db = new pg.Pool({
-//   connectionString: DATABASE_URL_LOCAL,
-//   ssl: {
-//     rejectUnauthorized: false,
-//   },
-// host: "127.0.0.1",
-// port: 5432,
-// user: process.env.PGUSER,
-// password: process.env.PG_PSW,
-// database: process.env.PG_DATABASE,
-// });
-
-// below for railway
-const DATABASE_URL = process.env.DATABASE_URL;
 const db = new pg.Pool({
-  connectionString: DATABASE_URL,
-  // host: "containers-us-west-175.railway.app",
-  // port: 7968,
-  // user: "postgres",
-  // password: process.env.PGPASSWORD,
-  // database: "railway",
+  connectionString: DATABASE_URL_LOCAL,
   ssl: {
     rejectUnauthorized: false,
   },
+  host: "127.0.0.1",
+  port: 5432,
+  user: process.env.PGUSER,
+  password: process.env.PG_PSW,
+  database: process.env.PG_DATABASE,
 });
+
+// below for railway
+// const DATABASE_URL = process.env.DATABASE_URL;
+// const db = new pg.Pool({
+//   connectionString: DATABASE_URL,
+// host: "containers-us-west-175.railway.app",
+// port: 7968,
+// user: "postgres",
+// password: process.env.PGPASSWORD,
+// database: "railway",
+//   ssl: {
+//     rejectUnauthorized: false,
+//   },
+// });
 
 const app = express();
 
@@ -322,11 +321,6 @@ app.put("/messages/edit/:commentid", (req, res) => {
     })
     .catch((err) => console.log(err));
 });
-
-// const PORT = process.env.PORT || 5585;
-// app.listen(PORT, () => {
-//   console.log(`\n\nApp listening on port ${PORT}\n\n`);
-// });
 
 const PORT = process.env.PORT || 5585;
 app.listen(PORT, () => {
