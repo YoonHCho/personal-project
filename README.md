@@ -2,11 +2,11 @@
 
 - [Yoon's 3-in-1](#travel-map-journal-computer)
 - [Why I Built This](#why-i-built-this-bulb)
-- [Technologies Used](#technologies-used-🧑‍💻)
-- [Features](#features-📝)
+- [Technologies Used](#technologies-used-technologist)
+- [Features](#features-memo-pencil)
 - [App Preview](#app-preview-mag)
 - [Other Requirement](#other-requirement-gear)
-- [Getting Started](#getting-started-⚡)
+- [Getting Started](#getting-started-zap)
 
 # Yoon's 3-in-1 :computer:
 
@@ -16,7 +16,7 @@ A Full-Stack Web Application with pomodoro, hangman, and forum like page.
 
 This is my first project outside of coding bootcamp. I wanted to build something on my own without using the dev environment from the bootcamp.
 
-# Technologies Used 🧑‍💻
+# Technologies Used :technologist:
 
 - UI Framework: **React**
 - JavaScript Runtime: **Node.js**
@@ -28,7 +28,7 @@ This is my first project outside of coding bootcamp. I wanted to build something
 
 ![Database Schema](./src/assets/images/personalProjOne.png "Database Schema")
 
-# Features 📝
+# Features :memo::pencil:
 
 - User can register and/or sign-in to navigate the web application
 - User can use other apps:
@@ -104,7 +104,7 @@ This is my first project outside of coding bootcamp. I wanted to build something
 - PostgreSQL (v15.1) https://www.postgresql.org/download/
 - Random Word API Key https://api-ninjas.com/api/randomword
 
-# Getting Started ⚡
+# Getting Started :zap:
 
 Since I am a Windows users, this setup is for windows user only. For Mac users, I apologize, I did not add one since I don't have have a way to test it and to give instructions.
 
