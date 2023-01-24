@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = process.env.BASE_URL;
+// const BASE_URL = process.env.BASE_URL;
 export default axios.create({
-  baseURL: BASE_URL,
+  baseURL: "https://personal-project-production-cc4d.up.railway.app",
 });
 
 // baseURL: "http://localhost:3000",
