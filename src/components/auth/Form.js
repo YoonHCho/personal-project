@@ -58,7 +58,7 @@ const Form = () => {
     }
 
     try {
-      const response = await axios.post(
+      await axios.post(
         REGISTER_URL,
         JSON.stringify({ username, email, password }),
         {
@@ -67,7 +67,6 @@ const Form = () => {
         }
       );
       settingsInfo.setHaveAcct(true);
-      console.log(response);
     } catch (err) {
       setTaken(true);
       console.error(err);
