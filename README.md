@@ -3,7 +3,7 @@
 - [Yoon's 3-in-1](#travel-map-journal-computer)
 - [Why I Built This](#why-i-built-this-bulb)
 - [Technologies Used](#technologies-used-technologist)
-- [Features](#features-memo-pencil)
+- [Features](#features-memo)
 - [App Preview](#app-preview-mag)
 - [Other Requirement](#other-requirement-gear)
 - [Getting Started](#getting-started-zap)
@@ -28,7 +28,7 @@ This is my first project outside of coding bootcamp. I wanted to build something
 
 ![Database Schema](./src/assets/images/personalProjOne.png "Database Schema")
 
-# Features :memo::pencil:
+# Features :memo:
 
 - User can register and/or sign-in to navigate the web application
 - User can use other apps:
