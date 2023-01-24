@@ -2,11 +2,9 @@
 
 - [Yoon's 3-in-1](#travel-map-journal-computer)
 - [Why I Built This](#why-i-built-this-bulb)
-<!-- - [Live Demo](#live-demo-link) -->
 - [Technologies Used](#technologies-used-🧑‍💻)
 - [Features](#features-📝)
 - [App Preview](#app-preview-mag)
-<!-- - [Features To Be Implemented](#feature-to-be-implemented-🔭) -->
 - [Other Requirement](#other-requirement-gear)
 - [Getting Started](#getting-started-⚡)
 
@@ -17,10 +15,6 @@ A Full-Stack Web Application with pomodoro, hangman, and forum like page.
 # Why I Built This :bulb:
 
 This is my first project outside of coding bootcamp. I wanted to build something on my own without using the dev environment from the bootcamp.
-
-<!-- # Live Demo :link:
-
-[Dokku Deployment](https://travel-map-journal.yoonhc.com/) -->
 
 # Technologies Used 🧑‍💻
 
@@ -104,12 +98,6 @@ This is my first project outside of coding bootcamp. I wanted to build something
 ![Hangman](./src/assets/images/hangman.gif "Hangman")
 
 ---
-
-<!-- # Features To Be Implemented 🔭
-
-- User can sign in
-- User can edit a log entry for a place
-- User can delete a log entry for a place -->
 
 # Other Requirement :gear:
 
