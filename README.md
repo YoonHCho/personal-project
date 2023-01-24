@@ -106,7 +106,7 @@ This is my first project outside of coding bootcamp. I wanted to build something
 
 # Getting Started :zap:
 
-Since I am a Windows users, this setup is for windows user only. For Mac users, I apologize, I did not add one since I don't have have a way to test it and to give instructions.
+Since I am a Windows users, this setup is for windows user only. For Mac users, I apologize, I did not add one since I don't have a way to test it and to give instructions.
 
 1. Clone repository.
 
